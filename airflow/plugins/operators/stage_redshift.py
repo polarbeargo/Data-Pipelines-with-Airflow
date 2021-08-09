@@ -39,6 +39,8 @@ class StageToRedshiftOperator(BaseOperator):
         self.table = table
         self.s3_bucket = s3_bucket
         self.s3_key = s3_key
+        self.delimiter = delimiter
+        self.ignore_headers = ignore_headers
        
     def execute(self, context):
         self.log.info('StageToRedshiftOperator not implemented yet')
