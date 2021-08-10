@@ -14,7 +14,7 @@ class LoadFactOperator(BaseOperator):
                  postgres_conn_id="",
                  table="",
                  sql="",
-                 if_exists="append",
+                 truncate=True,
                  *args, **kwargs):
 
         super(LoadFactOperator, self).__init__(*args, **kwargs)
@@ -24,14 +24,15 @@ class LoadFactOperator(BaseOperator):
         self.postgres_conn_id = postgres_conn_id
         self.sql = sql
         self.table = table
+        self.truncate = truncate
 
     def execute(self, context):
-        self.log.info('LoadFactOperator not implemented yet')
         postgres = PostgresHook(postgres_conn_id=self.postgres_conn_id)
 
-        if self.if_exists:
+        if self.truncate:
             self.log.info(f'Truncate table {self.table}')
             postgres.run(f'TRUNCATE {self.table}')
 
-        self.log.info(f'Load fact table {self.table}')
+        self.log.info(f'Loading fact table {self.table}')
         postgres.run(f'INSERT INTO {self.table} {self.sql}')
+        self.log.info('Finished')
