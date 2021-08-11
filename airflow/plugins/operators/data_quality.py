@@ -10,13 +10,20 @@ class DataQualityOperator(BaseOperator):
     def __init__(self,
                  # Define your operators params (with defaults) here
                  # Example:
-                 # conn_id = your-connection-name
+                 conn_id = '',
+                 tests=[],
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
         # Map params here
         # Example:
-        # self.conn_id = conn_id
-
+        self.conn_id = conn_id
+        self.tests = tests
+        
     def execute(self, context):
-        self.log.info('DataQualityOperator not implemented yet')
+        postgres = PostgresHook(self.postgres_conn_id)
+        
+        for test in self.tests:
+            self.log.info(f'Getting records for query: "{test.sql}"')
+            test.records = postgres.get_records(test.sql)
+            result = test.validate()
