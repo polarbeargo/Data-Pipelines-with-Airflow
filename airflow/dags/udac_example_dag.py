@@ -8,6 +8,7 @@ from helpers import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
+tables = ['staging_events', 'staging_songs', 'songplays', 'users', 'songs', 'artists', 'time']
 
 default_args = {
     'owner': 'udacity',
@@ -98,9 +99,22 @@ load_time_dimension_table = LoadDimensionOperator(
     truncate=False,
 )
 
+def check_greater_than_zero(*args, **kwargs):
+    table = kwargs["params"]["table"]
+    redshift_hook = PostgresHook("redshift")
+    records = redshift_hook.get_records(f"SELECT COUNT(*) FROM {table}")
+    if len(records) < 1 or len(records[0]) < 1:
+        raise ValueError(f"Data quality check failed. {table} returned no results")
+    num_records = records[0][0]
+    if num_records < 1:
+        raise ValueError(f"Data quality check failed. {table} contained 0 rows")
+    logging.info(f"Data quality on table {table} check passed with {records[0][0]} records")
+    
 run_quality_checks = DataQualityOperator(
     task_id='Run_data_quality_checks',
     dag=dag,
+    redshift_conn_id="redshift",
+    tests=[check_greater_than_zero(table) for table in tables],  
 )
 
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
