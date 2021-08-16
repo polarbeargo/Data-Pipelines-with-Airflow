@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 import os
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
+from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
                                 LoadDimensionOperator, DataQualityOperator)
 from helpers import SqlQueries
@@ -100,7 +101,7 @@ load_time_dimension_table = LoadDimensionOperator(
 )
 
 def check_greater_than_zero(*args, **kwargs):
-    table = kwargs["params"]["table"]
+    table = kwargs
     redshift_hook = PostgresHook("redshift")
     records = redshift_hook.get_records(f"SELECT COUNT(*) FROM {table}")
     if len(records) < 1 or len(records[0]) < 1:
