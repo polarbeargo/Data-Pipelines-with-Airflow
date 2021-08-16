@@ -20,7 +20,6 @@ class StageToRedshiftOperator(BaseOperator):
                  # Define your operators params (with defaults) here
                  # Example:
                  # redshift_conn_id=your-connection-name
-                 self,
                  redshift_conn_id='',
                  aws_credentials_id='',
                  table='',
@@ -34,7 +33,7 @@ class StageToRedshiftOperator(BaseOperator):
         # Map params here
         # Example:
         # self.conn_id = conn_id
-        elf.redshift_conn_id = redshift_conn_id
+        self.redshift_conn_id = redshift_conn_id
         self.aws_credentials_id = aws_credentials_id
         self.table = table
         self.s3_bucket = s3_bucket
