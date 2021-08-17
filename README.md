@@ -37,3 +37,21 @@ log_data/2018/11/2018-11-13-events.json
    * artist_id (string), name (string), location (string), latitude (double), longitude (double)    
 5. time - timestamps of records in songplays broken down into specific units  
    * start_time (timestamp), hour (integer), day (integer), week (integer), month (integer), year (integer), weekday (string)   
+
+## Operate Airflow web UI  
+Click on the Admin tab and select Connections. On the create connection page, enter the following values:
+
+   - Conn Id: Enter `aws_credentials`.  
+   - Conn Type: Enter `Amazon Web Services`.  
+   - Login: Enter your `Access key ID` from the IAM User credentials you downloaded earlier.  
+   - Password: Enter your `Secret access key` from the IAM User credentials you downloaded earlier.  
+
+On the next create connection page, enter the following values:
+
+   - Conn Id: Enter `redshift`.  
+   - Conn Type: Enter `Postgres`.  
+   - Host: Enter `the endpoint of your Redshift cluster`, excluding the port at the end.  
+   - Login: Enter `awsuser`.  
+   - Password: Enter the password you created when launching your Redshift cluster.  
+   - Port: Enter `5439`.  
+ 
