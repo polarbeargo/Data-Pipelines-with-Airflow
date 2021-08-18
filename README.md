@@ -1,7 +1,7 @@
 # Data-Pipelines-with-Airflow  
 [//]: # (Image References)
 
-[image1]: ./images/Dag.png
+[image1]: ./images/DAG.png
 [image2]: ./images/treeView.png
 
 ![][image1]   
