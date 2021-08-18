@@ -1,9 +1,11 @@
 # Data-Pipelines-with-Airflow  
 [//]: # (Image References)
 
-[image1]: ./images/exampleDag.png
+[image1]: ./images/Dag.png
+[image2]: ./images/treeView.png
 
-![][image1]    
+![][image1]   
+![][image2]  
 ## Project Datasets
 * Song data: 's3://udacity-dend/song_data'  
 * Log data: 's3://udacity-dend/log_data'  
