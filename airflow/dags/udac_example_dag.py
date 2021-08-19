@@ -1,6 +1,8 @@
 from datetime import datetime, timedelta
 import os
 from airflow import DAG
+from airflow.contrib.hooks.aws_hook import AwsHook
+from airflow.models import Variable
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
@@ -9,6 +11,8 @@ from helpers import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
+AWS_KEY = AwsHook('aws_credentials').get_credentials().access_key
+AWS_SECRET = AwsHook('aws_credentials').get_credentials().secret_key
 
 default_args = {
     'owner': 'udacity',
@@ -34,11 +38,13 @@ stage_events_to_redshift = StageToRedshiftOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="staging_events",
-    s3_bucket="udacity-dend",
-    s3_key="log-data",
-    delimiter=",",
-    ignore_headers=1,
-    json_path="s3://udacity-dend/log_json_path.json",
+    s3_bucket=Variable.get("s3_bucket"),
+    s3_path='log_data',
+    aws_key=AWS_KEY,
+    aws_secret=AWS_SECRET,
+    region='us-west-2',
+    copy_json_option='s3://' + Variable.get("s3_bucket") + '/log_json_path.json',
+    provide_context=True,
 )
 
 stage_songs_to_redshift = StageToRedshiftOperator(
@@ -47,11 +53,13 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="staging_songs",
-    s3_bucket="udacity-dend",
-    s3_key="song_data",
-    jsonpath="",
-    delimiter=",",
-    ignore_headers=1,
+    s3_bucket=Variable.get("s3_bucket"),
+    s3_path='log_data',
+    aws_key=AWS_KEY,
+    aws_secret=AWS_SECRET,
+    region='us-west-2',
+    provide_context=True,
+    copy_json_option='auto'
 )
 
 load_songplays_table = LoadFactOperator(
