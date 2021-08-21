@@ -163,9 +163,7 @@ def main(args):
     
 if __name__ == '__main__':
     """ Set logging level and cli arguments """
-#     logging.basicConfig(level=logging.INFO)
     parser = argparse.ArgumentParser()
     parser.add_argument('--delete', dest='delete', default=False, action='store_true')
-    parser.add_argument('--query_file', dest='query_file', default=None)
     args = parser.parse_args()
     main(args)
