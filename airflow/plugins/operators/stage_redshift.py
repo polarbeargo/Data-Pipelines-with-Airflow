@@ -3,6 +3,7 @@ from airflow.models import BaseOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.contrib.hooks.aws_hook import AwsHook
 
+
 class StageToRedshiftOperator(BaseOperator):
     ui_color = '#358140'
     template_fields = ("s3_key",)
@@ -43,8 +44,8 @@ class StageToRedshiftOperator(BaseOperator):
        
     def execute(self, context):
         self.log.info('StageToRedshiftOperator not implemented yet')
-        credentials = aws_hook.get_credentials()
         aws_hook = AwsHook(self.aws_credentials_id)
+        credentials = aws_hook.get_credentials()
         redshift = PostgresHook(postgres_conn_id=self.redshift_conn_id)
         self.log.info("Clearing data from destination Redshift table")
         redshift.run("DELETE FROM {}".format(self.table))
