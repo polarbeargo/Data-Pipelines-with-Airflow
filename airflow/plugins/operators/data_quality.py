@@ -10,20 +10,26 @@ class DataQualityOperator(BaseOperator):
     def __init__(self,
                  # Define your operators params (with defaults) here
                  # Example:
-                 conn_id = '',
+                 redshift_conn_id = '',
                  tests=[],
                  *args, **kwargs):
 
         super(DataQualityOperator, self).__init__(*args, **kwargs)
         # Map params here
         # Example:
-        self.conn_id = conn_id
+        self.redshift_conn_id = redshift_conn_id
         self.tests = tests
         
     def execute(self, context):
-        postgres = PostgresHook(self.postgres_conn_id)
-        
+        postgres = PostgresHook(postgres_conn_id = self.redshift_conn_id)   
         for test in self.tests:
-            self.log.info(f'Getting records for query: "{test.sql}"')
-            test.records = postgres.get_records(test.sql)
-            result = test.validate()
+            table = test.get("table")
+            result = test.get("return")
+            
+            records = postgres.get_records(table)[0]
+            if records[0] == result:
+                self.log.info("Data Quality Check passed")
+            else:
+                self.log.info("Data Check failed")
+        self.log.info("Finished Data Quality Check!")
+

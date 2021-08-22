@@ -126,22 +126,6 @@ run_quality_checks = DataQualityOperator(
             "table": "SELECT COUNT(*) FROM users WHERE userid IS NULL",
             "returnt": 0,
         },
-        {
-            "table": "SELECT COUNT(*) FROM songs WHERE song_id IS NULL",
-            "return": 0,
-        },
-        {
-            "table": "SELECT COUNT(*) FROM artists WHERE artist_id IS NULL",
-            "return": 0,
-        },
-        {
-            "table": "SELECT COUNT(*) FROM time WHERE start_time IS NULL",
-            "return": 0,
-        },
-        {
-            "table": "SELECT COUNT(*) FROM songplays WHERE songplay_id IS NULL",
-            "return": 0,
-        },
     ],
     ignore_fails=False, 
 )
