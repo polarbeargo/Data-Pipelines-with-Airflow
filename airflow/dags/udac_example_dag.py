@@ -6,8 +6,10 @@ from airflow.models import Variable
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.hooks.postgres_hook import PostgresHook
 from airflow.operators.postgres_operator import PostgresOperator
-from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
-                                LoadDimensionOperator, DataQualityOperator)
+# from airflow.operators import (StageToRedshiftOperator, LoadFactOperator,
+#                                 LoadDimensionOperator, DataQualityOperator)
+# from operators.stage_redshift import StageToRedshiftOperator
+from operators import (StageToRedshiftOperator, LoadFactOperator, LoadDimensionOperator, DataQualityOperator)
 from helpers import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
@@ -63,7 +65,7 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     table="staging_songs",
     s3_bucket="udacity-dend",
     s3_key="song_data",
-    s3_path='s3://udacity-dend/song_data',
+    s3_path='s3://udacity-dend/song_data/A/A/A',
     aws_key=AWS_KEY,
     aws_secret=AWS_SECRET,
     region='us-west-2',
