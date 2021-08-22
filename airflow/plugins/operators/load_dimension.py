@@ -11,9 +11,9 @@ class LoadDimensionOperator(BaseOperator):
                  # Define your operators params (with defaults) here
                  # Example:
                  # conn_id = your-connection-name
-                 postgres_conn_id='',
-                 sql='',
+                 redshift_conn_id='',
                  table='',
+                 sql='',
                  truncate= True,
                  *args, **kwargs):
 
@@ -21,18 +21,18 @@ class LoadDimensionOperator(BaseOperator):
         # Map params here
         # Example:
         # self.conn_id = conn_id
-        self.postgres_conn_id = postgres_conn_id
-        self.sql = sql
+        self.redshift_conn_id = redshift_conn_id
         self.table = table
+        self.sql = sql
         self.truncate = truncate
 
     def execute(self, context):
-        postgres = PostgresHook(postgres_conn_id=self.postgres_conn_id)
+        postgres = PostgresHook(postgres_conn_id=self.redshift_conn_id)
 
         if self.truncate:
             self.log.info(f'Truncate table {self.table}')
             postgres.run(f'TRUNCATE {self.table}')
 
         self.log.info(f'Loading dimension table {self.table}')
-        postgres.run(f'INSERT INTO {self.table} {self.sql}')
+        postgres.run(f"INSERT INTO {self.table} " + self.sql)
         self.log.info('Finished')
