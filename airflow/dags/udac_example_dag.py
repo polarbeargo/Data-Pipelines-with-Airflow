@@ -123,11 +123,7 @@ run_quality_checks = DataQualityOperator(
     redshift_conn_id="redshift",
     tests=[
         {
-            "table": "SELECT COUNT(*) FROM songplays WHERE songplay_id IS NULL",
-            "return": 0,
-        },
-        {
-            "table": "SELECT COUNT(*) FROM users WHERE user_id IS NULL",
+            "table": "SELECT COUNT(*) FROM users WHERE userid IS NULL",
             "returnt": 0,
         },
         {
@@ -140,6 +136,10 @@ run_quality_checks = DataQualityOperator(
         },
         {
             "table": "SELECT COUNT(*) FROM time WHERE start_time IS NULL",
+            "return": 0,
+        },
+        {
+            "table": "SELECT COUNT(*) FROM songplays WHERE songplay_id IS NULL",
             "return": 0,
         },
     ],
