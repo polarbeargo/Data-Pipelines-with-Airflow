@@ -3,9 +3,12 @@
 
 [image1]: ./images/DAG.png
 [image2]: ./images/treeView.png
-
-![][image1]   
-![][image2]  
+ 
+ This project will introduce the core concepts of Apache Airflow. We create custom operators to perform tasks such as the following:
+   - Staging the data in the StageToRedshiftOperator.  
+   - Filling the data warehouse in the LoadFactOperator and the LoadDimensionOperator.  
+   - Running checks on the data as the final step in the DataQualityOperator.  
+     
 ## Project Datasets
 * Song data: 's3://udacity-dend/song_data'  
 * Log data: 's3://udacity-dend/log_data'  
@@ -67,3 +70,8 @@ Click on the Admin tab and select Variable. Enter the following key and value:
 $ python create_redshift_cluster.py 
 $ /opt/airflow/start.sh
 ```
+
+## Result
+
+![][image1]   
+![][image2]  
