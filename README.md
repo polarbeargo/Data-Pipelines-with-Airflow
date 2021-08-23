@@ -60,10 +60,6 @@ On the next create connection page, enter the following values:
    - Password: Enter the password you created when launching your Redshift cluster.  
    - Port: Enter `5439`.  
 
-Click on the Admin tab and select Variable. Enter the following key and value:  
-   - Key:  s3_bucket       
-   - Value:  udacity-dend
-
 ## Run  
 
 ```shell
