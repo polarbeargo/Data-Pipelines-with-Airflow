@@ -14,8 +14,6 @@ from helpers import SqlQueries
 
 # AWS_KEY = os.environ.get('AWS_KEY')
 # AWS_SECRET = os.environ.get('AWS_SECRET')
-AWS_KEY = AwsHook('aws_credentials').get_credentials().access_key
-AWS_SECRET = AwsHook('aws_credentials').get_credentials().secret_key
 
 default_args = {
     'owner': 'udacity',
@@ -48,10 +46,7 @@ stage_events_to_redshift = StageToRedshiftOperator(
     redshift_conn_id="redshift",
     aws_credentials_id="aws_credentials",
     table="staging_events",
-    s3_bucket=Variable.get("s3_bucket"),
     s3_path='s3://udacity-dend/log_data',
-    aws_key=AWS_KEY,
-    aws_secret=AWS_SECRET,
     region='us-west-2',
     json_option="s3://udacity-dend/log_json_path.json",
     provide_context=True,
@@ -66,8 +61,8 @@ stage_songs_to_redshift = StageToRedshiftOperator(
     s3_bucket="udacity-dend",
     s3_key="song_data",
     s3_path='s3://udacity-dend/song_data/A/A/A',
-    aws_key=AWS_KEY,
-    aws_secret=AWS_SECRET,
+#     aws_key=AwsHook('aws_credentials').get_credentials().access_key,
+#     aws_secret=AwsHook('aws_credentials').get_credentials().secret_key,
     region='us-west-2',
     provide_context=True,
     json_option='auto'
